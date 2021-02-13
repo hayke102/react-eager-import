@@ -4,7 +4,7 @@ import { eagerImport, eagerImportDefault } from 'react-eager-import'
 
 // These are loaded immediately!!!
 const DefaultComponent = eagerImportDefault(() => import('./DefaultComponent'))
-const { Component2 } = eagerImport(() => import('./Component'))
+const { Component } = eagerImport(() => import('./Component'))
 
 // This is loaded when you are trying to render it
 const ReactLazyComponent = lazy(() => import('./ReactLazyComponent'))
