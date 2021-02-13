@@ -1,33 +1,40 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react'
 
-import { eagerImport } from 'react-eager-import'
+import { eagerImport, eagerImportDefault } from 'react-eager-import'
 
-// This is loaded when you are trying to render Component2
-const Component2 = lazy(() => import('./Component3'))
-// This is loaded immediately!!!
-const {default: Component1} = eagerImport(() => import('./Component1'))
+// These are loaded immediately!!!
+const DefaultComponent = eagerImportDefault(() => import('./DefaultComponent'))
+const { Component2 } = eagerImport(() => import('./Component'))
 
-
-
+// This is loaded when you are trying to render it
+const ReactLazyComponent = lazy(() => import('./ReactLazyComponent'))
 
 const App = () => {
-  const [displaySecondComponent, setDisplaySecondComponent] = useState(false)
+  const [fiveSecondsPassed, setFiveSecondsPassed] = useState(false)
+
   useEffect(() => {
     setTimeout(() => {
-      setDisplaySecondComponent(true)
+      setFiveSecondsPassed(true)
     }, 5000)
   }, [])
 
   return (
     <div>
       <Suspense fallback={'loading...'}>
-        <Component1 text="asd"/>
+        <DefaultComponent />
       </Suspense>
-      {displaySecondComponent && (
-        <Suspense fallback={'loading...'}>
-          <Component2 text="Asdsad"/>
-        </Suspense>
-        )}
+      {fiveSecondsPassed && (
+        <>
+          {/* This will load immediately */}
+          <Suspense fallback={'loading...'}>
+            <Component />
+          </Suspense>
+          {/* This will import the module then load */}
+          <Suspense fallback={'loading...'}>
+            <ReactLazyComponent />
+          </Suspense>
+        </>
+      )}
     </div>
   )
 }
