@@ -60,7 +60,5 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "react-lazily": "^0.9.0"
-  }
+  "dependencies": {}
 }
